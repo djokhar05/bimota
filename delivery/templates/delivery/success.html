@@ -1,0 +1,27 @@
+{% extends 'base.html' %} {% load static %} {% block content%}
+<div class="row">
+  <div class="col-12 col-md-6 offset-md-3 text-center mt-4">
+    <i class="bi bi-emoji-laughing" style="font-size: 6em"></i>
+    <h2 class="mt-4 mb-2 text-success">Hurray!!!</h2>
+    <h2 class="text-success">
+      You Have successfully placed your order with us
+    </h2>
+
+    <h5>Your order number is: {{pk}}</h5>
+
+    <p class="lead mt-2 text-danger" style="font-style: italic">
+      Don't forget to copy and keep your tracking number until your items are
+      delivered
+    </p>
+
+    <p class="lead mt-2">
+      You can continue browsing our categories if you like!
+      <a href="/"> Home </a>
+    </p>
+
+    <script>
+      clearStorage();
+    </script>
+  </div>
+</div>
+{% endblock%}

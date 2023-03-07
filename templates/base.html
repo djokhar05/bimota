@@ -1,0 +1,125 @@
+{% load static %} {# Load the tag library #} {% load bootstrap5 %}
+{################################ Load CSS and JavaScript #} {% bootstrap_css %}
+{% bootstrap_javascript %}
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Bimota Fashion</title>
+    <meta name="description" content="Ecommerce Fashion store" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/contactstyles.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/baseSlides.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
+    />
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <style>
+      .summary {
+        display: flex;
+        justify-content: space-between;
+      }
+      .alterOrder {
+        display: flex;
+        font-size: 1.5em;
+        justify-content: space-between;
+      }
+      .remove {
+        color: red;
+        cursor: pointer;
+      }
+      .remove:hover {
+        color: #f68b1e;
+      }
+      .django-ckeditor-widget{
+    display: inline !important;
+}
+    </style>
+  </head>
+  <body>
+    <script
+      type="text/javascript"
+      src="http://127.0.0.1:35729/livereload.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="{% static 'scripts/main.js' %}"
+    ></script>
+
+    <!--[if lt IE 7]>
+      <p class="browsehappy">
+        You are using an <strong>outdated</strong> browser. Please
+        <a href="#">upgrade your browser</a> to improve your experience.
+      </p>
+    <![endif]-->
+    <section id="container-fluid" class="container-fluid light-theme">
+      {% include 'header.html' %}
+
+      <div class="row">
+        <div class="col-12 col-lg-10 offset-lg-1 col-xl-8 offset-xl-2">
+          {% block content %} {% endblock content %}
+        </div>
+      </div>
+
+      {% include 'footer.html' %}
+    </section>
+    <button
+      type="button"
+      class="btn btn-primary"
+      id="liveToastBtn"
+      onclick="showToaster()"
+      hidden
+    >
+      Show live toast
+    </button>
+
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+      <div
+        id="liveToast"
+        class="toast"
+        role="alert"
+        aria-live="assertive"
+        aria-atomic="true"
+      >
+        <div class="toast-header bg-success text-white">
+          <strong class="me-auto">Bimota</strong>
+          <small id="now_date"
+            ><script>
+              let currentDate = new Date().toDateString();
+              let now_date = document.getElementById("now_date");
+              now_date.innerHTML = currentDate;
+            </script></small
+          >
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="toast"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="toast-body fw-bold">Item has been added to Cart!</div>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      $(function () {
+        $("[data-toggle=popover]").popover({
+          container: "body",
+          content: retrieveCartContent(),
+          placement: "bottom",
+          trigger: "hover",
+        });
+      });
+    </script>
+  </body>
+</html>

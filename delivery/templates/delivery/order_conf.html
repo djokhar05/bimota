@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <h6>Dear {{name}},</h6>
+    
+    <p>Thank you for shopping on BIMOTA! Your order with order Number <span style="font-weight: bold">{{orderNo}}</span> has been successfully confirmed.</p>
+
+    <p>It will be worked on and shipped as soon as possible. Once the item(s) is out for delivery or available for pick-up you will receive a notification from us.</p>
+
+    <table style="text-align: left;border: 1px solid gray; padding: 5px">
+        <tr>
+            <th style="border:1px solid gray">Recepient details</td>
+            <th style="border:1px solid gray">Delivery Address</td>
+        </tr>
+        <tr style="padding: 5px">
+            <td style="border:1px solid gray;padding: 5px"> {{name}} {{phone}} </td>
+            <td style="border:1px solid gray;padding: 5px"> {{address}} </td>
+        <tr>
+        <tr style="padding: 5px">
+            <td style="border:1px solid gray;padding: 5px; color: green;font-weight: bold"> Order Details </td>
+            <td style="border:1px solid gray;padding: 5px;font-weight:bold"> {{items}} </td>
+        <tr>
+    </table>
+
+    <p> Happy Shopping! </p>
+
+    <p> Warmest Regards, </p>
+
+    <h4 style="color: blue"> BIMOTA </h4>
+            
+    </table>
+  </body>
+</html>

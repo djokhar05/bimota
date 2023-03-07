@@ -1,0 +1,273 @@
+{% extends 'base.html' %} {% block content %}
+<div class="row mt-4" id="summary">
+  <div class="col-12 text-center" v-show="cart.length < 1">
+    <i style="font-size: 10em" class="bi bi-cart2"></i>
+    <h4>You have no item in your cart</h4>
+    <p>Checkout our categories to <a href="/">start shopping</a></p>
+  </div>
+
+  <div class="col-12 d-md-none" v-if="cart.length > 0">
+    <h5>Cart Summary</h5>
+    <div class="summary border-top pt-1">
+      <h6 class="mt-2">Subtotal</h6>
+      <h4>₦ [[ currentTotal.toLocaleString() ]]</h4>
+    </div>
+    <p>Delivery fees not included.</p>
+  </div>
+
+  <div class="col-12">
+    <div class="row">
+      <div class="col-12 col-md-9">
+        <div class="row">
+          <div
+            class="col-12 col-md-12 mt-2 border-top pt-3"
+            v-for="(item, index) in cart"
+            :key="item.cloth_id"
+          >
+            <div class="row">
+              <div class="col-4 col-md-2">
+                <img :src="item.cloth_image" class="img-fluid" />
+              </div>
+
+              <div class="col-8 col-md-7">
+                <h6>
+                  <a class="product-link" :href="item.cloth_url">
+                    [[ item.cloth_name ]]</a
+                  >
+                </h6>
+                <span>Seller:</span>
+                <span>BIMOTA</span>
+                <span class="d-md-none"> | </span>
+                <span class="d-md-block">Size: Stated in Description</span>
+                <span class="d-md-none"> | </span>
+                <span class="d-md-block">Category: Bottom</span>
+                <h5 class="d-md-none">
+                  ₦ [[ getClothPrice(item.cloth_price) ]]
+                </h5>
+              </div>
+
+              <div class="col-12 col-md-3 text-end">
+                <h5 class="d-none d-md-block">
+                  ₦ [[ getClothPrice(item.cloth_price) ]]
+                </h5>
+                <p>In stock</p>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="alterOrder">
+                <span
+                  class="mt-1 remove"
+                  data-bs-toggle="modal"
+                  data-bs-target="#staticBackdrop"
+                  @click="updateItemIndexToRemove(index)"
+                  ><i class="bi bi-trash"></i> Remove</span
+                >
+
+                <span id="qtyButton">
+                  <span>
+                    <button
+                      class="btn btn-secondary"
+                      @click="changeItemQuantity(index, '-')"
+                    >
+                      -
+                    </button>
+                  </span>
+                  <span> &nbsp; [[ item.cloth_quantity ]] &nbsp; </span>
+                  <span>
+                    <button
+                      class="btn btn-secondary"
+                      @click="changeItemQuantity(index, '+')"
+                    >
+                      +
+                    </button>
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        v-if="cart.length > 0"
+        class="d-none col-md-3 d-md-block border-top mt-2 pt-3 border border-rounded"
+      >
+        <h5>Cart Summary</h5>
+        <div class="summary border-top pt-1">
+          <h6 class="mt-2">Subtotal</h6>
+          <h4>₦ [[ currentTotal.toLocaleString() ]]</h4>
+        </div>
+        <p class="border-bottom full-width">Delivery fees not included.</p>
+        <div class="d-grid gap-2">
+          <a
+            :href="currentTotal.toLocaleString() == 0 ? false : '/delivery'"
+            class="btn btn-success p-3 fw-bold"
+            type="button"
+            style="font-size: 1.7em"
+            role="link"
+            :aria-disabled="currentTotal.toLocaleString() == 0 ? true : false"
+          >
+            CHECKOUT (₦ [[ currentTotal.toLocaleString() ]])
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-grid gap-2 mt-4 d-md-none" v-if="cart.length > 0">
+    <a
+      href="/delivery"
+      class="btn btn-success p-3 fw-bold"
+      type="button"
+      style="font-size: 1.7em"
+    >
+      CHECKOUT (₦ [[ currentTotal.toLocaleString() ]])
+    </a>
+  </div>
+
+  <!-- Modal -->
+  <div
+    class="modal fade"
+    id="staticBackdrop"
+    data-bs-backdrop="static"
+    data-bs-keyboard="false"
+    tabindex="-1"
+    aria-labelledby="staticBackdropLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">
+            Remove From Cart ?
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <span style="font-size: 1.3em"
+            >Do you really want to remove this item from cart?</span
+          >
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-outline-success"
+            data-bs-dismiss="modal"
+          >
+            <i class="bi bi-save"></i> &nbsp; &nbsp; Keep Item
+          </button>
+          <button
+            type="button"
+            class="btn btn-outline-danger"
+            @click="removeItemFromCart(itemIndexToRemove)"
+            data-bs-dismiss="modal"
+          >
+            <i class="bi bi-trash"></i> &nbsp; &nbsp; Remove Item
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  new Vue({
+    delimiters: ["[[", "]]"],
+    el: "#summary",
+    data() {
+      return {
+        cart: [],
+        expiry: "",
+        currentTotal: 0,
+        itemIndexToRemove: null,
+      };
+    },
+    watch: {},
+    methods: {
+      getClothPrice(cloth_price) {
+        return parseInt(cloth_price).toLocaleString();
+      },
+      changeItemQuantity(index, operator) {
+        this.cart = this.cart.map((item, idx) => {
+          if (idx == index) {
+            return {
+              ...item,
+              cloth_quantity:
+                operator == "+"
+                  ? this.cart[index].cloth_quantity + 1
+                  : this.cart[index].cloth_quantity < 1
+                  ? 0
+                  : this.cart[index].cloth_quantity - 1,
+            };
+          } else {
+            return { ...item };
+          }
+        });
+        this.updateLocalStorageCart();
+        this.calculateCurrentTotal();
+      },
+      updateItemIndexToRemove(index) {
+        this.itemIndexToRemove = index;
+      },
+      removeItemFromCart(index) {
+        this.cart = this.cart.filter((item, idx) => {
+          if (idx == index) {
+            return;
+          } else {
+            return { ...item };
+          }
+        });
+        this.updateLocalStorageCart();
+        this.calculateCurrentTotal();
+        this.updateItemIndexToRemove(null);
+      },
+      updateLocalStorageCart() {
+        const cart = {
+          cart: this.cart,
+          expiry: this.expiry,
+          currentTotal: this.currentTotal
+        };
+        localStorage.setItem("bimotaCart", JSON.stringify(cart));
+      },
+      calculateCurrentTotal() {
+        this.currentTotal = this.cart.reduce((totalPrice, item) => {
+          //console.log(`${totalPrice}  ${parseFloat(item.cloth_price)}`);
+          return (
+            totalPrice +
+            parseFloat(item.cloth_price) * parseInt(item.cloth_quantity)
+          );
+        }, 0);
+
+        this.updateLocalStorageCart();
+      },
+    },
+    created() {
+      try {
+        let cartList = JSON.parse(localStorage.getItem("bimotaCart"));
+        this.cart = cartList.cart;
+        this.expiry = cartList.expiry;
+        this.calculateCurrentTotal();
+      } catch (e) {
+        this.cart = [];
+      }
+    },
+  });
+</script>
+
+<style>
+  .product-link {
+    text-decoration: none;
+    color: #53a48d;
+  }
+  .product-link:hover {
+    color: gray;
+  }
+</style>
+
+{% endblock %}

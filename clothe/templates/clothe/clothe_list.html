@@ -1,0 +1,173 @@
+{% extends 'base.html' %} {% load humanize %} {% block content %}
+<div class="row">
+  <div class="col-12 col-lg-10 offset-lg-1">
+    <div class="row">
+      <div class="col-12">
+        <span id="path_text" hidden> {{ request.path }} </span>
+        <span class="fs-3 fw-bolder" id="route_text">
+          <script type="text/javascript">
+            let path_content = document.getElementById("path_text");
+            path_content = path_content.textContent;
+            path_content = path_content.split("/");
+            path_content = path_content[path_content.length - 1];
+
+            let route_text = document.getElementById("route_text");
+            route_text.textContent =
+              path_content.charAt(0).toUpperCase() + path_content.slice(1);
+          </script>
+          Wears
+        </span>
+
+        {% if 'search' in request.path %}
+
+        <span class="float-end d-none d-lg-block mt-3">
+          Sort by: Price -
+          <a href="#" onclick="orderBy('-cloth_price')">High To Low</a> | Price:
+          <a href="#" onclick="orderBy('+cloth_price')">Low to High</a>
+        </span>
+
+        {% else %}
+
+        <span class="float-end d-none d-lg-block mt-3">
+          Sort by: Price -
+          <a href="{{request.path}}?ordering=-cloth_price">High To Low</a> |
+          Price:
+          <a href="{{request.path}}?ordering=+cloth_price">Low to High</a>
+        </span>
+
+        {% endif %}
+      </div>
+
+      <div class="col-12 d-lg-none">
+        <div class="row">
+          <div class="col-6 text-center">
+            <h3>Search Filter</h3>
+            <ul class="categories">
+              <li><a href="{{request.path}}">All Categories</a></li>
+              <li><a href="{{request.path}}?filter=top">Tops</a></li>
+              <li><a href="{{request.path}}?filter=bottom">Bottom</a></li>
+              <li><a href="{{request.path}}?filter=complete">Complete</a></li>
+            </ul>
+          </div>
+
+          <div class="col-6 text-center">
+            <h6>Sort By Price</h6>
+            <p>
+              <a href="{{request.path}}?ordering=-cloth_price">High To Low</a>
+            </p>
+            <p>
+              <a href="{{request.path}}?ordering=+cloth_price">Low to High</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 results-bg">
+    <div class="row">
+      <div class="col-12 col-lg-10 offset-lg-1">
+        <div class="row">
+          <div class="d-none d-lg-block col-md-4 col-lg-3 col-xl-2">
+            {% include 'sidebar.html' %}
+          </div>
+
+          <div class="col-12 col-lg-9 col-xl-10">
+            <div class="row">
+              {% for clothe in object_list %}
+              <div class="col-6 col-md-4 col-lg-3">
+                <div class="card mt-4">
+                  <a
+                    href="{% url 'clothe_detail' clothe.id %}"
+                    style="text-decoration: none; color: inherit"
+                  >
+                    <div class="row">
+                      <div class="col-12">
+                        <img
+                          class="img-fluid rounded bg-light"
+                          src="/media/{{clothe.cloth_thumbnail}}"
+                        />
+                      </div>
+
+                      <div class="col-12 p-4">
+                        <div>
+                          <h5 class="card-title">{{clothe.cloth_name}}</h5>
+                        </div>
+                        <div>
+                          <p class="currency">
+                            {{clothe.cloth_price | intcomma }}
+                          </p>
+                        </div>
+                        <div class="item-description">
+                          <p>
+                            {{clothe.cloth_description | slice:":60"}} ...
+                            <a href="{% url 'clothe_detail' clothe.id %}"
+                              >View More
+                            </a>
+                          </p>
+
+                          <p></p>
+                        </div>
+
+                        <div>
+                          <button
+                            href="#"
+                            class="btn btn-outline-danger w-100"
+                            onclick="changeOrderQty(
+                              '{{ clothe.id }}',
+                              '{{ clothe.cloth_name }}',
+                              '/media/{{clothe.cloth_thumbnail}}',
+                              '{{ clothe.cloth_price }}',
+                              '{% url 'clothe_detail' clothe.id %}'
+                            )"
+                          >
+                            Add to Cart
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+
+              {% empty %}
+              <h5 class="text-danger mt-4 text-center">
+                There are no products for this search criteria
+              </h5>
+              {% endfor %}
+            </div>
+
+            <div class="row">
+              <div class="col-12">
+                <!-- Pagination -->
+                <div class="pagination justify-content-center">
+                  {% if page_obj.has_previous %}
+                  <a
+                    href="{% url 'clothe_list' %}?page={{ page_obj.previous_page_number }}"
+                    >Previous
+                  </a>
+                  {% endif %}
+
+                  <span class="mx-4">
+                    <span>Page {{ page_obj.number }} </span> of
+                    <span>{{ page_obj.paginator.num_pages }} </span>
+                  </span>
+
+                  {% if page_obj.has_next %}
+                  <a
+                    href="{% url 'clothe_list' %}?page={{ page_obj.next_page_number }}"
+                  >
+                    Next</a
+                  >
+                  {% endif %}
+                </div>
+                <!-- END Pagination -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

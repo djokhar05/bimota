@@ -1,0 +1,88 @@
+<div class="row">
+    <div class="col-12 advert">
+        <h2> I AM THE ADVERT SECTION </h2>
+    </div>
+</div>
+<nav class="navbar navbar-expand-lg sticky-top navbar-light bg-light" id="toggleElement">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/"><img width="30px" src="https://i.postimg.cc/qRbYw8B8/biomota.jpg"></a>
+
+        <div>
+            <a href="/summary"><i
+                class="bi bi-cart3 d-lg-none"
+                data-toggle="popover"
+                title="Cart Content"
+                data-content="And here's some amazing content. It's very engaging. Right?"
+                style="font-size: 2em; cursor: pointer"
+                data-placement="bottom"
+            ></i> </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+                <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'home_page' %}">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if request.path == '/clothes/male' %}active{% endif %}" href="/clothes/male">Men's Wears</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if request.path == '/clothes/female' %}active{% endif %}" href="/clothes/female">Women's Wears</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if request.path == '/clothes/unisex' %}active{% endif %}" href="/clothes/unisex">UNISEX</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link {% if request.path == '/contact/' %}active{% endif %}" href="{% url 'contact' %}">Contact</a>
+            </li>
+
+            {% comment %} <li class="nav-item">
+                <a class="nav-link {% if request.path == '/about/' %}active{% endif %}" href="{% url 'about' %}">About</a>
+            </li> {% endcomment %}
+
+
+            {% comment %} <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Contact
+                </a>
+                <ul class="dropdown-menu active" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item active" href="/contact">Contact Us</a></li>
+                    <li><a class="dropdown-item" href="#">About Us</a></li>
+                </ul>
+            </li> {% endcomment %}
+        </ul>
+        
+        <a href="/summary"><i
+            class="bi bi-cart3 d-none d-lg-block"
+            data-toggle="popover"
+            title="Cart Content"
+            data-content="And here's some amazing content. It's very engaging. Right?"
+            style="font-size: 2em; cursor: pointer"
+            data-placement="bottom"
+        ></i>
+        </a>
+        
+        <div>
+
+        </div>
+
+        <div>
+        
+        <form class="d-flex" method="get" action={% url 'search' %}>
+            <input name="query" class="form-control me-2" type="search" placeholder="Search for an item" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+
+        <svg id="night-moon" style="margin-left: 20px; cursor: pointer; margin-top: 3px;" onclick="toggleDarkMode()" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-moon-fill" viewBox="0 0 16 16">
+            <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/>
+        </svg>
+        </form>
+
+
+        </div>
+
+
+    </div>
+</nav>

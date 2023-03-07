@@ -1,0 +1,83 @@
+{% extends 'base.html' %} {% load humanize %} {% block content %}
+
+<div class="row">
+  <div class="col-12 col-lg-10 offset-lg-1 col-xl-8 offset-xl-2">
+    <div
+      class="row"
+      style="border-left: 2px solid red; border-right: 2px solid red"
+    >
+      <div class="col-12">
+        <a href="{{request.META.HTTP_REFERER|escape}}">
+          <i class="bi bi-arrow-return-left"></i
+          ><span style="position: relative; top: -10px; text-decoration: none"
+            >back</span
+          >
+        </a>
+      </div>
+
+      <div class="col-12 col-lg-7 text-center mt-4">
+        <img
+          class="img-fluid rounded bg-light"
+          src="/media/{{clothe.cloth_image}}"
+        />
+      </div>
+
+      <div class="col-12 col-sm-8 offset-sm-2 col-lg-5 offset-lg-0">
+        <div class="row">
+          <div class="col-12 p-4">
+            <div>
+              <h5>{{object.cloth_name}}</h5>
+            </div>
+            <div>
+              <p class="currency">{{object.cloth_price | intcomma }}</p>
+            </div>
+            <div>
+              <div>{{object.cloth_description|safe}}</div>
+            </div>
+
+            <div class="row">
+              <div class="col-8 col-lg-7 col-xl-8">
+                <button
+                  href="#"
+                  class="btn btn-outline-danger w-100"
+                  onclick="changeOrderQty(
+                              '{{ clothe.id }}',
+                              '{{ clothe.cloth_name }}',
+                              '{{ clothe.cloth_image }}',
+                              '{{ clothe.cloth_price }}',
+                              '{% url 'clothe_detail' clothe.id %}'
+                            )"
+                >
+                  Add to Cart
+                </button>
+              </div>
+              <div class="col-4 col-lg-5 col-xl-4 fw-bold pt-2 qty">
+                <span>Qty</span>
+                <span id="ordered_item_qty"></span>
+
+                <script>
+                  const retrieveItemQty = (item_id) => {
+                    cart = JSON.parse(localStorage.getItem("bimotaCart")).cart; // Grab the cart from the localstorage
+                    let item = "";
+                    try {
+                      item = cart.filter((item) => item_id == item.cloth_id)[0]
+                        .cloth_quantity;
+                    } catch (e) {}
+
+                    const item_qty =
+                      document.getElementById("ordered_item_qty");
+                    item_qty.innerHTML = item ? item : 0;
+                  };
+
+                  retrieveItemQty("{{clothe.id}}");
+                </script>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

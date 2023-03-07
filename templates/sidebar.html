@@ -1,0 +1,66 @@
+{% if 'search' in request.path %}
+<section>
+  <h5 class="mt-2">Sub Categories</h5>
+  <ul class="categories">
+    <li><a href="/clothes">All Categories</a></li>
+
+    <li><a href="#" onclick="filterSearchResult('top')">Tops</a></li>
+    <li><a href="#" onclick="filterSearchResult('bottom')">Bottom</a></li>
+    <li>
+      <a href="#" onclick="filterSearchResult('complete')">Complete</a>
+    </li>
+
+    <script>
+      const currentUrl = location.href; //Create a variable to hold the current url
+
+      //this function returns the position of the final letter in search string
+      const getWordPosition = (wordToSearch, searchString) => {
+        let searchQueryPosition = wordToSearch.indexOf(searchString);
+        let position = searchQueryPosition + searchString.length;
+
+        return position;
+      };
+
+      //this function filters the serch result and redirects the url to get the new search results
+      const filterSearchResult = (filter) => {
+        let currentSearchQuery = document.getElementById("path_el").innerHTML;
+        let q = getWordPosition(currentUrl, currentSearchQuery);
+
+        let searchQuery = currentUrl.substring(0, q);
+        let fullSearchQuery = `${searchQuery}&filter=${filter}`;
+        location.href = fullSearchQuery;
+      };
+
+      // This function ordeers the search term by price
+      const orderBy = (direction) => {
+        let orderingSet = currentUrl.includes("ordering");
+
+        //check if the ordering parameter is set
+        if (orderingSet) {
+          let orderingPosition = getWordPosition(currentUrl, "ordering");
+          let searchQuery = currentUrl.substring(0, orderingPosition);
+
+          let fullSearchQueryWithOrdering = `${searchQuery}=${direction}`;
+          location.href = fullSearchQueryWithOrdering;
+        } else {
+          let cleaned_cu = currentUrl.substring(0, currentUrl.length - 1);
+          location.href = `${cleaned_cu}&ordering=${direction}`;
+        }
+      };
+
+      //orderBy();
+    </script>
+  </ul>
+</section>
+
+{% else %}
+<section>
+  <h5 class="mt-2">Sub Sub Categories</h5>
+  <ul class="categories">
+    <li><a href="{{request.path}}">All Categories</a></li>
+    <li><a href="{{request.path}}?filter=top">Tops</a></li>
+    <li><a href="{{request.path}}?filter=bottom">Bottom</a></li>
+    <li><a href="{{request.path}}?filter=complete">Complete</a></li>
+  </ul>
+</section>
+{% endif %}

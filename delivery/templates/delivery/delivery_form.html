@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content%}
+    <form method="POST" class="rounded border p-4 border-primary border-bottom-0">
+        {% csrf_token%}
+        <div class="row">
+            <div class="col-12 col-md-8 offset-md-2 col-xl-6 offset-xl-3">
+                
+                <h4> Delivery / Order Details </h4>
+                <label for="id_name"> {{form.name.label}} </label>
+                {{ form.name }}
+                {{form.name.errors}}
+                
+                <label for="id_address" class="mt-3"> {{form.address.label}} </label>
+                {{ form.address }}
+
+                <label for="id_email" class="mt-3"> {{form.email.label}} </label>
+                {{ form.email }}
+
+                <label for="id_phone" class="mt-3"> {{form.phone.label}} </label>
+                {{ form.phone }}
+                <br />
+                <div
+                  class="text-danger fw-bold mt-1"
+                  data-bs-toggle="modal"
+                  data-bs-target="#staticBackdrop"
+                  style="cursor: pointer"
+                  >
+                    Click to see how to send us your exact measurement
+                </div>
+
+                {{form.media}}
+                <label for="id_measurements" class="mt-3"> {{form.measurements.label}}</label>
+                {{form.measurements}}
+
+                <br />
+
+                <div class="" style="display: none;">
+                    {{form.items}}
+                </div>
+                
+                <script>
+                    let item_element = document.getElementById("id_items");
+                    let cartContent = retrieveCartContent();
+                    item_element.value = cartContent;
+                </script>
+
+                <span
+                  class="btn btn-outline-primary mt-2"
+                  data-bs-toggle="modal"
+                  data-bs-target="#submitModal"
+                  >
+                    
+                  Continue to place your Order ?
+                </span
+                
+
+            </div>
+        </div>
+
+        <section>
+            <!-- Modal -->
+            <div
+            class="modal fade"
+            id="staticBackdrop"
+            data-bs-backdrop="static"
+            data-bs-keyboard="false"
+            tabindex="-1"
+            aria-labelledby="staticBackdropLabel"
+            aria-hidden="true"
+            >
+                <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">
+                        Remove From Cart ?
+                    </h5>
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                    ></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <img src={% static 'delivery/bimota-measurement.jpg' %} class="img-fluid" />
+                    </div>
+                    <div class="modal-footer">
+                    <button
+                        type="button"
+                        class="btn btn-outline-success"
+                        data-bs-dismiss="modal"
+                    >
+                        <i class="bi bi-save"></i> &nbsp; &nbsp; OK
+                    </button>
+                    </div>
+                </div>
+                </div>   
+            </div>       
+
+
+            <!-- Modal -->
+            <div
+            class="modal fade"
+            id="submitModal"
+            data-bs-backdrop="static"
+            data-bs-keyboard="false"
+            tabindex="-1"
+            aria-labelledby="submitModalLabel"
+            aria-hidden="true"
+            >
+                <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="submitModalLabel">
+                       <span style="position:relative;top-8px;right: 5px; font-size: 1.4em;"><i class="bi bi-info-circle"></i></span> Payment Information
+                    </h5>
+                    </div>
+                    <div class="modal-body">
+                        <h6 class="fw-bold">NB: Our preferred shipping platform internationally is DHL </h6>
+                        <ul class="text-danger">
+                            <li> Make sure to describe what you need as best as you can </li>
+                            <li> Make sure to state colors, size and style exactly as you need it </li>
+                            <li> After payment, kindly send us the payment receipt to info@bimota.com </li>
+                            <li> You can also call us on +234 703 283 28382 to fast track payment verification </li>
+                        </ul>
+
+                        <hr />
+                        <hr style="margin-top: -10px" />
+                       <table>
+                        <div class="text-decoration-underline"> <span class="fw-bold h6">NAIRA ACCOUNT NB:</span> &nbsp; (<span class="text-danger"> Please pay in only Naira to this account </span>) </div>
+                        <tr> <td>Bank Name:</td> <td>STERLING BANK</td> </tr>
+                        <tr> <td>Name on Account:</td> <td>BIMOTA DESIGNS AND FASHION ENTERPRISES</td> </tr>
+                        <tr> <td>Account Number:</td> <td>0077826342</td> </tr>
+                       </table><br />
+
+                       <table>
+                        <div class="text-decoration-underline"> <span class="fw-bold h6">DOLLAR ACCOUNT NB:</span> &nbsp; (<span class="text-danger"> Please pay in only Dollars to this account </span>) </div>
+                        <tr> <td>Bank Name:</td> <td>UNITED BANK OF AFRICA (UBA)</td> </tr>
+                        <tr> <td>Name on Account:</td> <td>OGUNYEMI TAIYE MUNSURU</td> </tr>
+                        <tr> <td>Account Number:</td> <td>2267367142 </td> </tr>
+                       </table> <br />
+                    
+                       <div style="border-top: 1px solid gray; font-size: 1.2em" class="fw-bold text-success">
+                        <p> As Soon as payment is made send a receipt to our email address info@bimota.com </p>
+                        <p> Or send the receipt to our Whatsapp +234 (223) 342 21823 </p>
+                    </div
+
+                       
+                    </div>
+                    <div class="modal-footer">
+                    <span
+                        class="btn btn-outline-success"
+                        data-bs-dismiss="modal"
+                    >
+                        <i class="bi bi-pen"></i></i> &nbsp; Edit Info
+                    </span>
+                    <button
+                        type="submit"
+                        class="btn btn-outline-success"
+                        data-bs-dismiss="modal"
+                    >
+                        <i class="bi bi-check2-circle"></i> &nbsp; Complete Order and Make Payment
+                    </button>
+                    </div>
+                </div>
+                </div>   
+            </div>      
+
+            </section>
+
+    </form>
+
+
+    
+{% endblock%}
