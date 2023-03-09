@@ -39,11 +39,11 @@ def OrderCompleted(request, pk):
     message = render_to_string(
         'delivery/order_conf.html', {'name': order_details['name'], 'orderNo': pk, 'phone': order_details['phone'], 'address': order_details['address'], 'items': order_details['items']})
     mail_from = 'support@bimota.com.ng'
-    recipient = [order_details['email']]
+    recipient = [order_details['email'], 'orders@bimota.com.ng']
 
     email = EmailMessage(subject, message, mail_from, recipient)
     email.content_subtype = "html"
-    res = email.send()
+    # res = email.send()
     # return HttpResponse('%s' % res)
 
     return render(request, "delivery/success.html", context)

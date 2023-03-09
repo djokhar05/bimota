@@ -9,5 +9,5 @@ from clothe.models import Clothe
 def home_page(requests):
     context = Clothe.objects.all()
     # context = Clothe.objects.filter(cloth_gender="unisex")
-    print(context)
+    # print(context)
     return render(requests, 'homepage/home_page.html', {"clothes": context})
